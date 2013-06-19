@@ -1,0 +1,16 @@
+.classpath
+.settings
+.project
+.jruby
+*.iml
+*.ipr
+*.iws
+target
+bin/
+internal-gateway/deploy.bat
+.DS_Store
+.idea
+/inputcontact.json
+/output.json
+/outputContact.json
+/outputContactProperties.json

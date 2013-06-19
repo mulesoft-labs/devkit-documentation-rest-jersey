@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:oauth1example="http://www.mulesoft.org/schema/mule/oauth1example" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/oauth1example http://www.mulesoft.org/schema/mule/oauth1example/1.0-SNAPSHOT/mule-oauth1example.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd">
+    <oauth1example:config name="OAuth_1_Config" apiKey="${dropbox.apikey}" apiSecret="${dropbox.apisecret}" doc:name="OAuth 1 Example">
+        <oauth1example:oauth-callback-config domain="localhost" localPort="8090" remotePort="8090" path="callbackresponse"/>
+    </oauth1example:config>
+    <flow name="Authentication_Flow" doc:name="Authentication_Flow">
+        <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8090" doc:name="HTTP" path="auth"/>
+        <logger message="Authenticating" level="INFO" doc:name="Logger"/>
+        <oauth1example:authorize config-ref="OAuth_1_Config" doc:name="Authorize"/>
+        <logger message="Authenticated. Payload: #[payload]" level="INFO" doc:name="Logger"/>
+        <flow-ref name="Operation_Flow" doc:name="Flow Reference"/>
+    </flow>
+    <flow name="Operation_Flow" doc:name="Operation_Flow">
+        <logger message="Called subflow" level="INFO" doc:name="Logger"/>
+        <oauth1example:log-info config-ref="OAuth_1_Config" doc:name="Log Info"/>
+        <oauth1example:get-account-info config-ref="OAuth_1_Config" doc:name="Get Account Info"/>
+        <json:object-to-json-transformer doc:name="Object to JSON"/>
+    </flow>
+</mule>

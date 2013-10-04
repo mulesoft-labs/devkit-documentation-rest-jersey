@@ -6,7 +6,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 http://www.mulesoft.org/schema/mule/oauth1example http://www.mulesoft.org/schema/mule/oauth1example/1.0-SNAPSHOT/mule-oauth1example.xsd
 http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
 http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd">
-    <oauth1example:config name="OAuth_1_Config" apiKey="${dropbox.apikey}" apiSecret="${dropbox.apisecret}" doc:name="OAuth 1 Example">
+    <oauth1example:config name="OAuth_1_Config" consumerKey="${dropbox.apikey}" consumerSecret="${dropbox.apisecret}" doc:name="OAuth 1 Example">
         <oauth1example:oauth-callback-config domain="localhost" localPort="8090" remotePort="8090" path="callbackresponse"/>
     </oauth1example:config>
     <flow name="Authentication_Flow" doc:name="Authentication_Flow">

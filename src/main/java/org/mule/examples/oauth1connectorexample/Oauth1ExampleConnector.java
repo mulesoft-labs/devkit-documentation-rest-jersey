@@ -8,12 +8,15 @@ import org.apache.commons.logging.LogFactory;
 import org.mule.api.annotations.Configurable;
 import org.mule.api.annotations.Connector;
 import org.mule.api.annotations.Processor;
+import org.mule.api.annotations.lifecycle.Start;
 import org.mule.api.annotations.oauth.OAuth;
 import org.mule.api.annotations.oauth.OAuthAccessToken;
 import org.mule.api.annotations.oauth.OAuthAccessTokenSecret;
 import org.mule.api.annotations.oauth.OAuthConsumerKey;
 import org.mule.api.annotations.oauth.OAuthConsumerSecret;
 import org.mule.api.annotations.oauth.OAuthProtected;
+import org.mule.api.annotations.param.Default;
+import org.mule.api.annotations.param.Optional;
 import org.mule.examples.oauth1connectorexample.client.DropboxClient;
 import org.mule.examples.oauth1connectorexample.entities.AccountInfo;
 import org.mule.examples.oauth1connectorexample.exception.Oauth1ConnectorExampleException;
@@ -37,20 +40,36 @@ import org.mule.examples.oauth1connectorexample.exception.Oauth1ConnectorExample
 public class Oauth1ExampleConnector {
 
 	static final private Log logger = LogFactory.getLog(Oauth1ExampleConnector.class);
-	
+
+    /**
+     * Dropbox API Url
+     */
+    @Configurable
+    @Optional
+    @Default("https://api.dropbox.com")
+    private String apiUrl;
+
+    /**
+     * Dropbox API version
+     */
+    @Configurable
+    @Optional
+    @Default("1")
+    private String apiVersion;
+
 	/**
 	 * The ApiKey
 	 */
 	@Configurable
 	@OAuthConsumerKey
-	private String apiKey;
+	private String consumerKey;
 
 	/**
-	 * The apiSecret
+	 * The consumerSecret
 	 */
 	@Configurable
 	@OAuthConsumerSecret
-	private String apiSecret;
+	private String consumerSecret;
 	
 	@OAuthAccessToken
 	private String accessToken;
@@ -59,10 +78,11 @@ public class Oauth1ExampleConnector {
 	private String accessTokenSecret;
 	
 	private DropboxClient client;
-	
-	public Oauth1ExampleConnector() {
-		client = new DropboxClient();
-	}
+
+    @Start
+    public void init() {
+        setClient(new DropboxClient(this));
+    }
 
 	/**
 	 * Logs as INFO the oAuthAccessToken & oAuthAccessTokenSecret
@@ -72,8 +92,8 @@ public class Oauth1ExampleConnector {
 	@OAuthProtected
 	@Processor
 	public void logInfo() {
-		logger.info(String.format("oAuthAccessToken=%s", accessToken));
-		logger.info(String.format("oAuthAccessTokenSecret=%s", accessTokenSecret));
+		logger.info(String.format("oAuthAccessToken=%s", getAccessToken()));
+		logger.info(String.format("oAuthAccessTokenSecret=%s", getAccessTokenSecret()));
 	}
 	
 	/**
@@ -88,23 +108,23 @@ public class Oauth1ExampleConnector {
 	@OAuthProtected
 	@Processor
 	public AccountInfo getAccountInfo() throws Oauth1ConnectorExampleException, Oauth1ConnectorExampleTokenExpiredException {
-		return client.getAccountInfo(apiKey, apiSecret, accessToken, accessTokenSecret);
+		return getClient().getAccountInfo();
 	}
 
-	public String getApiKey() {
-		return apiKey;
+	public String getConsumerKey() {
+		return consumerKey;
 	}
 
-	public void setApiKey(String apiKey) {
-		this.apiKey = apiKey;
+	public void setConsumerKey(String consumerKey) {
+		this.consumerKey = consumerKey;
 	}
 
-	public String getApiSecret() {
-		return apiSecret;
+	public String getConsumerSecret() {
+		return consumerSecret;
 	}
 
-	public void setApiSecret(String apiSecret) {
-		this.apiSecret = apiSecret;
+	public void setConsumerSecret(String consumerSecret) {
+		this.consumerSecret = consumerSecret;
 	}
 
 	public String getAccessToken() {
@@ -123,5 +143,31 @@ public class Oauth1ExampleConnector {
 		this.accessTokenSecret = accessTokenSecret;
 	}
 
-	
+    public static Log getLogger() {
+        return logger;
+    }
+
+    public String getApiUrl() {
+        return apiUrl;
+    }
+
+    public void setApiUrl(String apiUrl) {
+        this.apiUrl = apiUrl;
+    }
+
+    public String getApiVersion() {
+        return apiVersion;
+    }
+
+    public void setApiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+    }
+
+    public DropboxClient getClient() {
+        return client;
+    }
+
+    public void setClient(DropboxClient client) {
+        this.client = client;
+    }
 }

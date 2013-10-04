@@ -5,6 +5,7 @@ package org.mule.examples.oauth1connectorexample;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.mule.examples.oauth1connectorexample.client.DropboxClient;
 
 
 public class Oauth1ExampleConnectorTest {

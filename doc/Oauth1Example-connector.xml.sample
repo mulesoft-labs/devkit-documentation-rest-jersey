@@ -1,6 +1,0 @@
-<!-- BEGIN_INCLUDE(oauth1example:log-info) -->
-    <oauth1example:log-info />
-<!-- END_INCLUDE(oauth1example:log-info) -->
-<!-- BEGIN_INCLUDE(oauth1example:get-account-info) -->
-    <oauth1example:get-account-info />
-<!-- END_INCLUDE(oauth1example:get-account-info) -->

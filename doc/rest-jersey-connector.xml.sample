@@ -1,0 +1,6 @@
+<!-- BEGIN_INCLUDE(rest-jersey:log-info) -->
+    <rest-jersey:log-info />
+<!-- END_INCLUDE(rest-jersey:log-info) -->
+<!-- BEGIN_INCLUDE(rest-jersey:get-account-info) -->
+    <rest-jersey:get-account-info />
+<!-- END_INCLUDE(rest-jersey:get-account-info) -->

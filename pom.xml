@@ -3,10 +3,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.mule.examples</groupId>
-    <artifactId>oauth1-connector-example</artifactId>
+    <artifactId>rest-jersey-connector-example</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>mule-module</packaging>
-    <name>OAuth 1 Example</name>
+    <name>REST Jersey Connector Example</name>
 
     <properties>
         <mule.version>3.4.0</mule.version>

@@ -1,4 +1,4 @@
-package org.mule.examples.oauth1connectorexample.entities;
+package org.mule.examples.restjerseyconnector.entities;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,35 +15,35 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 public class AccountInfo {
 
 	@JsonProperty("referral_link")
-	private String referral_link;
+	private String referralLink;
 	@JsonProperty("display_name")
-	private String display_name;
+	private String displayName;
 	@JsonProperty("uid")
 	private Integer uid;
 	@JsonProperty("country")
 	private String country;
 	@JsonProperty("quota_info")
-	private QuotaInfo quota_info;
+	private QuotaInfo quotaInfo;
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
 	@JsonProperty("referral_link")
-	public String getReferral_link() {
-		return referral_link;
+	public String getReferralLink() {
+		return referralLink;
 	}
 
 	@JsonProperty("referral_link")
-	public void setReferral_link(String referral_link) {
-		this.referral_link = referral_link;
+	public void setReferralLink(String referralLink) {
+		this.referralLink = referralLink;
 	}
 
 	@JsonProperty("display_name")
-	public String getDisplay_name() {
-		return display_name;
+	public String getDisplayName() {
+		return displayName;
 	}
 
 	@JsonProperty("display_name")
-	public void setDisplay_name(String display_name) {
-		this.display_name = display_name;
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
 	}
 
 	@JsonProperty("uid")
@@ -67,13 +67,13 @@ public class AccountInfo {
 	}
 
 	@JsonProperty("quota_info")
-	public QuotaInfo getQuota_info() {
-		return quota_info;
+	public QuotaInfo getQuotaInfo() {
+		return quotaInfo;
 	}
 
 	@JsonProperty("quota_info")
-	public void setQuota_info(QuotaInfo quota_info) {
-		this.quota_info = quota_info;
+	public void setQuotaInfo(QuotaInfo quotaInfo) {
+		this.quotaInfo = quotaInfo;
 	}
 
 	@JsonAnyGetter

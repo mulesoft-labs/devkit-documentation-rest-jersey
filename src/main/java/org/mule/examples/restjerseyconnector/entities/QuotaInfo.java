@@ -1,4 +1,4 @@
-package org.mule.examples.oauth1connectorexample.entities;
+package org.mule.examples.restjerseyconnector.entities;
 
 import java.util.HashMap;
 import java.util.Map;

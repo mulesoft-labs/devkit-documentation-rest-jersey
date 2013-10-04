@@ -1,4 +1,4 @@
-package org.mule.examples.oauth1connectorexample.client;
+package org.mule.examples.restjerseyconnector.client;
 
 
 import javax.ws.rs.core.MediaType;
@@ -10,25 +10,23 @@ import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.oauth.client.OAuthClientFilter;
 import com.sun.jersey.oauth.signature.OAuthParameters;
 import com.sun.jersey.oauth.signature.OAuthSecrets;
-import org.mule.examples.oauth1connectorexample.Oauth1ExampleConnector;
-import org.mule.examples.oauth1connectorexample.entities.AccountInfo;
-import org.mule.examples.oauth1connectorexample.exception.Oauth1ConnectorExampleException;
-import org.mule.examples.oauth1connectorexample.exception.Oauth1ConnectorExampleTokenExpiredException;
+import org.mule.examples.restjerseyconnector.RestJerseyConnector;
+import org.mule.examples.restjerseyconnector.entities.AccountInfo;
+import org.mule.examples.restjerseyconnector.exception.RestJerseyConnectorException;
+import org.mule.examples.restjerseyconnector.exception.RestJerseyConnectorTokenExpiredException;
 
 public class DropboxClient {
 
 	private Client client;
     private WebResource apiResource;
-    private Oauth1ExampleConnector connector;
+    private RestJerseyConnector connector;
 	
-	public DropboxClient(Oauth1ExampleConnector connector) {
+	public DropboxClient(RestJerseyConnector connector) {
         setConnector(connector);
 
         ClientConfig clientConfig = new DefaultClientConfig();
         clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-
         this.client = Client.create(clientConfig);
-
         this.apiResource = this.client.resource(getConnector().getApiUrl() + "/" + getConnector().getApiVersion());
 	}
 	
@@ -37,11 +35,11 @@ public class DropboxClient {
 	 * Returns the Account Information of the user
 	 * 
 	 * @return The AccountInfo
-	 * @throws Oauth1ConnectorExampleException If the response is an error or the response cannot be parsed as an AccountInfo
-	 * @throws Oauth1ConnectorExampleTokenExpiredException If the current token used for the call to the service is no longer valid
+	 * @throws org.mule.examples.restjerseyconnector.exception.RestJerseyConnectorException If the response is an error or the response cannot be parsed as an AccountInfo
+	 * @throws org.mule.examples.restjerseyconnector.exception.RestJerseyConnectorTokenExpiredException If the current token used for the call to the service is no longer valid
 	 */
 	public AccountInfo getAccountInfo()
-			throws Oauth1ConnectorExampleException, Oauth1ConnectorExampleTokenExpiredException {
+			throws RestJerseyConnectorException, RestJerseyConnectorTokenExpiredException {
 
 		WebResource webResource = getApiResource().path("account").path("info");
 		return execute(webResource, "GET", AccountInfo.class);
@@ -54,7 +52,7 @@ public class DropboxClient {
      */
 	private WebResource addSignHeader(WebResource webResource) {
 
-		OAuthParameters params = new OAuthParameters();
+        OAuthParameters params = new OAuthParameters();
         params.signatureMethod("PLAINTEXT");
         params.consumerKey(getConnector().getConsumerKey());
         params.setToken(getConnector().getAccessToken());
@@ -73,17 +71,17 @@ public class DropboxClient {
      * Executes the Dropbox request
      *
      */
-    private <T> T execute(WebResource webResource, String method, Class<T> returnClass) throws Oauth1ConnectorExampleTokenExpiredException,
-            Oauth1ConnectorExampleException {
+    private <T> T execute(WebResource webResource, String method, Class<T> returnClass) throws RestJerseyConnectorTokenExpiredException,
+            RestJerseyConnectorException {
         ClientResponse clientResponse = webResource.accept(MediaType.APPLICATION_JSON).method(method, ClientResponse.class);
 
         if(clientResponse.getStatus() == 200) {
             return clientResponse.getEntity(returnClass);
         } else if (clientResponse.getStatus() == 401) {
-            throw new Oauth1ConnectorExampleTokenExpiredException("The access token has expired; " +
+            throw new RestJerseyConnectorTokenExpiredException("The access token has expired; " +
                     clientResponse.getEntity(String.class));
         } else {
-            throw new Oauth1ConnectorExampleException(
+            throw new RestJerseyConnectorException(
                     String.format("ERROR - statusCode: %d - message: %s",
                             clientResponse.getStatus(), clientResponse.getEntity(String.class)));
         }
@@ -105,11 +103,11 @@ public class DropboxClient {
         this.apiResource = apiResource;
     }
 
-    public Oauth1ExampleConnector getConnector() {
+    public RestJerseyConnector getConnector() {
         return connector;
     }
 
-    public void setConnector(Oauth1ExampleConnector connector) {
+    public void setConnector(RestJerseyConnector connector) {
         this.connector = connector;
     }
 }

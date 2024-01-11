@@ -9,7 +9,7 @@
     <name>REST Jersey Connector Example</name>
 
     <properties>
-        <mule.version>3.4.0</mule.version>
+        <mule.version>3.9.0</mule.version>
         <mule.devkit.version>3.4.0</mule.devkit.version>
         <junit.version>4.9</junit.version>
         <mockito.version>1.8.2</mockito.version>
